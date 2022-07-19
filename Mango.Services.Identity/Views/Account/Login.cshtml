@@ -44,8 +44,9 @@
                             <button class="btn btn-primary" name="button" value="login">Login</button>
                             <button class="btn btn-secondary" name="button" value="cancel">Cancel</button>
                         </form>
-
-                        <div class="card-footer"><a href="@Url.Action("Register",new {Model.ReturnUrl})">New User? Register</a></div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="@Url.Action("Register",new {Model.ReturnUrl})">New User? Register</a>
                     </div>
                 </div>
             </div>
@@ -64,10 +65,10 @@
                             {
                                 <li class="list-inline-item">
                                     <a class="btn btn-secondary"
-                                       asp-controller="External"
-                                       asp-action="Challenge"
-                                       asp-route-scheme="@provider.AuthenticationScheme"
-                                       asp-route-returnUrl="@Model.ReturnUrl">
+                               asp-controller="External"
+                               asp-action="Challenge"
+                               asp-route-scheme="@provider.AuthenticationScheme"
+                               asp-route-returnUrl="@Model.ReturnUrl">
                                         @provider.DisplayName
                                     </a>
                                 </li>
