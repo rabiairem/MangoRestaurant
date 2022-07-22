@@ -47,18 +47,20 @@ namespace IdentityServerHost.Quickstart.UI
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            UserManager<ApplicationUser> applicationUser,
+            UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleInManager
+            )
         {
-            _userManager = applicationUser;
-            _signInManager = signInManager;
-            _roleManager = roleManager;
-
+            // if the TestUserStore is not in DI, then we'll just use the global users collection
+            // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _roleManager = roleInManager;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         /// <summary>
@@ -118,13 +120,14 @@ namespace IdentityServerHost.Quickstart.UI
 
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, false);
 
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.Username);
-
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, context?.Client.ClientId));
+                    await _events.RaiseAsync(
+                        new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName,
+                        clientId: context?.Client.ClientId));
 
                     if (context != null)
                     {
@@ -369,7 +372,6 @@ namespace IdentityServerHost.Quickstart.UI
                 ExternalProviders = providers.ToArray()
             };
         }
-
         /*****************************************/
         /* helper APIs for the AccountController */
         /*****************************************/
