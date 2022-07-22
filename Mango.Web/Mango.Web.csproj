@@ -17,4 +17,8 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mango.Services.ProductAPI\Mango.Services.ProductAPI.csproj" />
+  </ItemGroup>
+
 </Project>
