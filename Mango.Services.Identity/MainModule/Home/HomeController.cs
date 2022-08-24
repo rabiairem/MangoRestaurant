@@ -17,7 +17,7 @@ namespace IdentityServerHost.Quickstart.UI
     public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly IWebHost
+        private readonly IWebHostEnvironment
             _environment;
         private readonly ILogger _logger;
 
